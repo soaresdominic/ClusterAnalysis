@@ -42,8 +42,9 @@ finalB = []
 X = []
 for instance in dataVals:
     tempL = []
-    tempL.append(instance[0])
-    tempL.append(instance[1])
+
+    tempL.append(instance[4])
+    tempL.append(instance[6])
     X.append(tempL)
 #print(finalA)
 #print(finalB)
