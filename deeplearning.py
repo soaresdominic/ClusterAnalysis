@@ -78,14 +78,14 @@ Tfalse += 70-cluster_labels_list[70:140].count(mode2)
 Ttrue += cluster_labels_list[140:].count(mode3)
 Tfalse += 70-cluster_labels_list[140:].count(mode3)
 
-
+"""
 print(cluster_labels_list[:70].count(mode1))
 print(70-cluster_labels_list[:70].count(mode1))
 print(cluster_labels_list[70:140].count(mode2))
 print(70-cluster_labels_list[70:140].count(mode2))
 print( cluster_labels_list[140:].count(mode3))
 print(70-cluster_labels_list[140:].count(mode3))
-
+"""
 
 print(str(Ttrue) + "/" + str(Ttrue + Tfalse))
 print("Accuracy: " + str(Ttrue / (Ttrue + Tfalse)))
