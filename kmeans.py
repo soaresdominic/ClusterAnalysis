@@ -1,17 +1,22 @@
-#Tensorflow deep clustering algorithm implementation
+#kmeans clustering algorithm implementation
 
 import os
+import numpy as np
 import pandas as pd
 from statistics import mode
-import os
-import pandas as pd
-import tensorflow as tf
 
-data = None
+import sklearn
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_samples, silhouette_score
+
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
+
 def main():
-    global data
-    data = import_data()
-    predLabels = Tcluster()
+    dataFrame = import_data()
+    dataList, dataClasses = cleanData(dataFrame)
+    predLabels = kmeans(dataList)
     validation(predLabels)
 
 
@@ -22,19 +27,30 @@ def import_data():
     return data
 
 
-def input_fn():
-    global data
-    return tf.constant(data.as_matrix(), tf.float32, data.shape), None
+def cleanData(dataFrame):
+    data_classes = []
+    for instance in dataFrame.values:
+        data_classes.append(instance[-1])
+    dataFrame=dataFrame.drop(columns=['h'])
+    dataVals = dataFrame.values
+
+    data = []
+    for instance in dataVals:
+        data.append(instance.tolist())
+    data = np.array(data)
+    #print(data)
+    return data, data_classes
 
 
 
-def Tcluster():
-    tf.logging.set_verbosity(tf.logging.ERROR)
-    kmeans = tf.contrib.learn.KMeansClustering(num_clusters=3, relative_tolerance=0.0001)
-    kfit = kmeans.fit(input_fn=input_fn)
-    clusters = kmeans.clusters()
-    assignments = list(kmeans.predict_cluster_idx(input_fn=input_fn))
-    return assignments
+def kmeans(data):
+    # Initialize the clusterer to make 3 clusters
+    # seed of 10 for reproducibility.
+    clusterer = KMeans(n_clusters=3, random_state=10)
+    cluster_labels = clusterer.fit_predict(data)
+    cluster_labels_list = cluster_labels.tolist()
+    #print(type(cluster_labels_list))
+    return cluster_labels_list
 
 
 
@@ -68,5 +84,6 @@ def validation(labels):
     print( labels[140:].count(mode3))
     print(70-labels[140:].count(mode3))
     """
+
 
 main()
