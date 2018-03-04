@@ -45,6 +45,7 @@ for instance in dataVals:
 
     tempL.append(instance[4])
     tempL.append(instance[6])
+    
     X.append(tempL)
 #print(finalA)
 #print(finalB)
@@ -67,8 +68,9 @@ ax1.set_ylim([0, len(X) + (n_clusters + 1) * 10])
 
 # Initialize the clusterer with 3 value and a random generator
 # seed of 10 for reproducibility.
-clusterer = KMeans(n_clusters=n_clusters, random_state=0)
+clusterer = KMeans(n_clusters=n_clusters, n_init=50, max_iter=1000, random_state=1)
 cluster_labels = clusterer.fit_predict(X)
+print(cluster_labels)
 
 
 
@@ -167,7 +169,7 @@ ax2.scatter(centers[:, 0], centers[:, 1], marker='o',
 
 for i, c in enumerate(centers):
     ax2.scatter(c[0], c[1], marker='$%d$' % i, alpha=1,
-                s=50, edgecolor='k')
+                s=70, edgecolor='k')
 
 ax2.set_title("The visualization of the clustered data.")
 ax2.set_xlabel("Feature space for the 1st feature")
