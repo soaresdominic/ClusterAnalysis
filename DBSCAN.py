@@ -8,7 +8,7 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
 
 file = os.sep.join(['seeds_dataset.txt'])
-data = pd.read_csv(file, sep="\t", header=None, names=["Area", "Perimeter", "Compactness", "Length of Kernel","Width of Kernel","Asymmetry coefficient"," Length of kernel groove","h"])
+data = pd.read_csv(file, sep="\t", header=None, names=["Area", "Perimeter", "Compactness", "Length of Kernel","Width of Kernel","Asymmetry coefficient"," Length of kernel groove","Label"])
 
 #data=data.drop(columns=['h'])
 #data.head()
@@ -24,7 +24,7 @@ for instance in data.values:
     tempL.append(instance[4])
     tempL.append(instance[6])
     X.append(tempL)
-labels_true=data['h'].values
+labels_true=data['Label'].values
 #print(labels_true)
 X = StandardScaler().fit_transform(X)
 
@@ -74,4 +74,3 @@ for k, col in zip(unique_labels, colors):
 
 plt.title('Estimated number of clusters: %d' % n_clusters_)
 plt.show()
-
