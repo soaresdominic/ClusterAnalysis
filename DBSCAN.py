@@ -21,8 +21,8 @@ data = pd.read_csv(file, sep="\t", header=None, names=["Area", "Perimeter", "Com
 X= []
 for instance in data.values:
     tempL = []
-    tempL.append(instance[4])
     tempL.append(instance[6])
+    tempL.append(instance[0])
     X.append(tempL)
 labels_true=data['Label'].values
 #print(labels_true)
@@ -30,7 +30,7 @@ X = StandardScaler().fit_transform(X)
 
 # #############################################################################
 # Compute DBSCAN
-db = DBSCAN(eps=0.3, min_samples=5).fit(X)
+db = DBSCAN(eps=0.9, min_samples=5).fit(X)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
 labels = db.labels_
@@ -46,8 +46,8 @@ print("Adjusted Rand Index: %0.3f"
       % metrics.adjusted_rand_score(labels_true, labels))
 print("Adjusted Mutual Information: %0.3f"
       % metrics.adjusted_mutual_info_score(labels_true, labels))
-print("Silhouette Coefficient: %0.3f"
-      % metrics.silhouette_score(X, labels))
+#print("Silhouette Coefficient: %0.3f"
+     # % metrics.silhouette_score(X, labels))
 
 # #############################################################################
 # Plot result
