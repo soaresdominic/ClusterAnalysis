@@ -1,4 +1,8 @@
-#get_ipython().run_line_magic('matplotlib', 'inline')
+#Cluster Analysis
+#DBSCAN algorithm
+#USAGE:
+#     python3 DBSCAN.py
+#change attributes: change the index values on lines 26/27
 
 
 import os, numpy as np, pandas as pd
@@ -12,8 +16,6 @@ data = pd.read_csv(file, sep="\t", header=None, names=["Area", "Perimeter", "Com
 
 #data=data.drop(columns=['h'])
 #data.head()
-
-
 
 
 # #############################################################################

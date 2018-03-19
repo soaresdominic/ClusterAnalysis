@@ -1,4 +1,9 @@
+#Cluster Analysis
 #kmeans clustering algorithm implementation
+#USAGE:
+#     python3 kmeans.py
+#     python3 kmeans.py validation
+#validation - shows the silhouette plots and values for the two attributes selected on line 36
 
 import os
 import numpy as np
@@ -28,7 +33,7 @@ def main():
 
     if(len(sys.argv) > 1):
         if(sys.argv[1] == "validation"):
-            showSilhouette(dataList, dataClasses, [4,6])
+            showSilhouette(dataList, dataClasses, [2,4])
         else:
             print("Argument Error.")
 
@@ -101,7 +106,7 @@ def showSilhouette(data, cluster_labels, attributes):
         size_cluster_i = ith_cluster_silhouette_values.shape[0]
         y_upper = y_lower + size_cluster_i
 
-        color = cm.spectral(float(i) / n_clusters)
+        color = cm.Spectral(float(i) / n_clusters)
         #print(y_lower)
         #print(y_upper)
         #print(np.arange(y_lower, y_upper))
@@ -127,7 +132,7 @@ def showSilhouette(data, cluster_labels, attributes):
     ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
 
     # 2nd Plot showing the actual clusters formed
-    colors = cm.spectral(cluster_labels_s.astype(float) / n_clusters)
+    colors = cm.Spectral(cluster_labels_s.astype(float) / n_clusters)
     #print(type(X))
     #print(colors)
     ax2.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7, c=colors, edgecolor='k')
