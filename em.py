@@ -25,11 +25,12 @@ def main():
     dataFrame = import_data()
     dataList, dataClasses = cleanData(dataFrame)
     accuracies = []
-    for i in range(40):
+    for i in range(1,41):
         predLabels = em(dataList)
+        print("Attempt: " + str(i) + "  -  ", end="")
         accuracies.append(validation(predLabels, len(predLabels)))
     #print(accuracies)
-    print("Accuracy: " + str(100*(round(mean(accuracies),4))) + "%")
+    print("Overall Accuracy: " + str(100*(round(mean(accuracies),4))) + "%")
 
     if(len(sys.argv) > 1):
         if(sys.argv[1] == "validation"):
@@ -67,7 +68,7 @@ def showSilhouette(data, cluster_labels, attributes):
     #print(X)
     # Create a subplot with 1 row and 2 columns
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    fig.set_size_inches(18, 7)
+    fig.set_size_inches(13, 5.75)
     # The 1st subplot is the silhouette plot
     # The silhouette coefficient can range from -1, 1 but in this example all
     # lie within [-0.1, 1]
@@ -85,10 +86,21 @@ def showSilhouette(data, cluster_labels, attributes):
     clusterer_s.fit(X)
     cluster_labels_s = clusterer_s.predict(X)
 
+    colors_scatter = []
+    colorT = ""
+    for value in cluster_labels_s:
+        if(value == 0):
+            colorT = "red"
+        if(value == 1):
+            colorT = "blue"
+        if(value == 2):
+            colorT = "green"
+        colors_scatter.append(colorT)
+
     #print(cluster_labels_s)
 
     silhouette_avg = silhouette_score(X, cluster_labels_s)
-    print("For n_clusters =", n_clusters, "The average silhouette_score is :", silhouette_avg)
+    print("For 3 clusters the average silhouette_score is:", round(silhouette_avg,5))
 
     # Compute the silhouette scores for each sample
     sample_silhouette_values = silhouette_samples(X, cluster_labels_s)
@@ -107,13 +119,19 @@ def showSilhouette(data, cluster_labels, attributes):
         size_cluster_i = ith_cluster_silhouette_values.shape[0]
         y_upper = y_lower + size_cluster_i
 
-        color = cm.Spectral(float(i) / n_clusters)
+        if(i == 0):
+            color = "red"
+        if(i == 1):
+            color = "blue"
+        if(i == 2):
+            color = "green"
+
         #print(y_lower)
         #print(y_upper)
         #print(np.arange(y_lower, y_upper))
         ax1.fill_betweenx(np.arange(y_lower, y_upper),
                             0, ith_cluster_silhouette_values,
-                            facecolor=color, edgecolor=color, alpha=0.7)
+                            facecolor=color, edgecolor=color, alpha=1)
 
         # Label the silhouette plots with their cluster numbers at the middle
         ax1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
@@ -133,10 +151,10 @@ def showSilhouette(data, cluster_labels, attributes):
     ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
 
     # 2nd Plot showing the actual clusters formed
-    colors = cm.Spectral(cluster_labels_s.astype(float) / n_clusters)
+    colors = ["red", "blue", "green"]
     #print(type(X))
     #print(colors)
-    ax2.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7, c=colors, edgecolor='k')
+    ax2.scatter(X[:, 0], X[:, 1], marker='.', s=50, lw=0, alpha=1, c=colors_scatter, edgecolor='k')
 
     
     # Labeling the clusters
@@ -211,7 +229,7 @@ def validation(labels, size):
     Ttrue += labels[n2:].count(mode3)
     Tfalse += n1-labels[n2:].count(mode3)
 
-    #print(str(Ttrue) + "/" + str(Ttrue + Tfalse))
+    print("Accuracy: " + str(Ttrue) + "/" + str(Ttrue + Tfalse) + " " + str(round(100*Ttrue / (Ttrue + Tfalse),2)) + "%")
     #print("Accuracy: " + str(Ttrue / (Ttrue + Tfalse)))
     #print(labels)
     return (Ttrue / (Ttrue + Tfalse))
